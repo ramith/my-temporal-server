@@ -1,0 +1,49 @@
+# Configuration for Temporal server using MySQL
+
+# The listening address for the Temporal server.
+# Format: hostname:port
+rpc_address: "0.0.0.0:7233"
+
+# Data store configuration
+data_store:
+  type: "mysql"
+  connection:
+    # Replace with your actual MySQL credentials and details
+    datasource: "${MYSQL_USER}:${MYSQL_PWD}@tcp(${MYSQL_SEEDS}:${MYSQL_PORT})/${DBNAME}"
+
+# The number of worker threads for processing workflows.
+worker_concurrency: 100
+
+# The number of history shards for horizontal scaling.
+# Adjust this based on your workload.
+history_shard_count: 10
+
+# The maximum retention period for workflow history in days.
+# Set to 0 for infinite retention.
+archive_retention_days: 0
+
+# Optional: Enable TLS for communication (replace with your certs)
+# tls:
+#   cert_file: "/path/to/cert.pem"
+#   key_file: "/path/to/key.pem"
+
+# Authentication and authorization configuration (replace with your chosen method)
+# auth:
+#   # Configure this section based on your chosen authentication method
+#   # (e.g., bearer tokens, integrated identity providers)
+
+# Enable metrics reporting (e.g., Prometheus)
+metrics:
+  # Set to true to enable metrics reporting.
+  enabled: false
+  # Address of the metrics endpoint (if enabled).
+  # Format: hostname:port
+  address: "0.0.0.0:9090"
+
+# Enable tracing (e.g., Jaeger)
+tracing:
+  # Set to true to enable tracing.
+  enabled: false
+  # Address of the tracing endpoint (if enabled).
+  # Format: hostname:port
+  address: "0.0.0.0:6831"
