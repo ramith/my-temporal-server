@@ -1,5 +1,5 @@
 # Use an official Docker image as a parent image
-FROM temporalio/server:1.15.0
+FROM temporalio/server:latest
 
 # Expose the necessary ports
 EXPOSE 7233
