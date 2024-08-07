@@ -5,15 +5,19 @@ USER root
 # Install MySQL client and CA certificates
 RUN apk update && apk add --no-cache mysql-client ca-certificates
 
-# Copy auto-setup.sh from the temporalio/auto-setup image
-COPY --from=temporalio/auto-setup:latest /auto-setup.sh /etc/temporal/auto-setup.sh
+# Copy everything from /etc/temporal in temporalio/auto-setup:latest image to /etc/temporal in this image
+COPY --from=temporalio/auto-setup:latest /etc/temporal /etc/temporal
 
-# Make the script executable
-RUN chmod +x /etc/temporal/auto-setup.sh
+# Ensure all scripts are executable
+RUN chmod +x /etc/temporal/*.sh
 
-USER 10001
-
+# Copy start.sh and check_mysql.sh to /etc/temporal
 COPY start.sh /etc/temporal/start.sh
 COPY check_mysql.sh /etc/temporal/check_mysql.sh
+
+# Ensure the copied scripts are executable
+RUN chmod +x /etc/temporal/start.sh /etc/temporal/check_mysql.sh
+
+USER 10001
 
 ENTRYPOINT ["sh", "/etc/temporal/start.sh"]
